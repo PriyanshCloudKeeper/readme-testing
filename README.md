@@ -347,7 +347,7 @@ This bridge is built to the **SCIM 2.0** standard and has been successfully test
 
 1.  In your Okta Admin Console, navigate to **Applications** > **Applications** > **Browse App Catalog**.
 2.  Search and select **SCIM 2.0 Test App (OAuth Bearer Token).
-3.  Proceed to the **SCIM Connection** configuration screen.
+3.  Proceed to the **Provisioning** configuration screen.
 
 #### Configuration Details
 
@@ -357,7 +357,7 @@ Fill in the SCIM connection form with the following details:
     *(This is the `SCIM_BRIDGE_EXTERNAL_URL` from your .env file, with `/scim/v2` appended).*
 
 -   **Authorization**: Provide a valid Bearer Token.
-    *This is the static-token from `application.yml`*
+    *This is the static token from `application.yml`*
 
 After saving, click **Test Connector Configuration** to ensure Okta can communicate with the Axiom bridge.
 
@@ -378,7 +378,7 @@ Enable the following options:
 #### Final Steps
 
 1.  **Assign Users/Groups**: In the **Assignments** tab, assign users or groups to the application. Once assigned, Okta will automatically start provisioning them to your Keycloak instance through the Axiom bridge.
-2. Verify the users and groups in keycloak
+2.  Verify the users and groups in Keycloak
 
 ---
 
