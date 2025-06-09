@@ -84,23 +84,20 @@ MARIADB_PASSWORD=your_strong_keycloak_db_password
 # Keycloak Admin Credentials & Host
 KEYCLOAK_ADMIN_USER=admin
 KEYCLOAK_ADMIN_PASSWORD=your_strong_keycloak_admin_password
-KC_HOSTNAME_URL=https://keycloak.yourdomain.com
-KEYCLOAK_HOST_HTTP_PORT=8081
+KC_HOSTNAME_URL=https://keycloak.yourdomain.com # Public URL for Keycloak
+KEYCLOAK_HOST_HTTP_PORT=8081 # Host port Keycloak's HTTP will be mapped to
 
 # Janus (SCIM Bridge) Host
-SCIM_BRIDGE_HOST_PORT=8082
+SCIM_BRIDGE_HOST_PORT=8082 # Host port Janus's HTTP will be mapped to
 
 # Janus Configuration (Keycloak Admin Client & Security)
-# The realm that issues tokens to secure the bridge itself
-KEYCLOAK_BRIDGE_SECURED_BY_REALM=master
-# The realm the admin client will connect to (often the same as above)
-KEYCLOAK_ADMIN_CLIENT_REALM=master
-# The realm where users/groups will be provisioned
-KEYCLOAK_PROVISIONING_TARGET_REALM=master
-# Client ID and secret for the bridge (created in Keycloak in a later step)
-KEYCLOAK_ADMIN_CLIENT_ID=scim-bridge-client
-KEYCLOAK_ADMIN_CLIENT_SECRET=generate_a_strong_secret_here
-# The public-facing URL of the SCIM bridge
+KEYCLOAK_BRIDGE_SECURED_BY_REALM=master # Realm used by Keycloak to issue tokens to its own clients (not used for SCIM auth in current setup)
+KEYCLOAK_ADMIN_CLIENT_REALM=master # Realm where scim-bridge-client authenticates for admin operations
+KEYCLOAK_PROVISIONING_TARGET_REALM=master # Realm where users/groups will be provisioned by Janus
+KEYCLOAK_ADMIN_CLIENT_ID=scim-bridge-client # Client ID for Janus to talk to Keycloak Admin API
+KEYCLOAK_ADMIN_CLIENT_SECRET=REPLACE_WITH_A_VERY_STRONG_SECRET # Secret for scim-bridge-client (Keycloak Admin API)
+
+# Public-facing base URL of the SCIM bridge (used by Janus to construct self-referential links)
 SCIM_BRIDGE_EXTERNAL_URL=https://scim.yourdomain.com
 ```
 
