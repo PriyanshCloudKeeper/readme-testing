@@ -223,27 +223,7 @@ sudo certbot --nginx -d keycloak.yourdomain.com -d scim.yourdomain.com
 
 ---
 
-#### Update the SCIM Bridge NGINX Configuration
-
-Edit the file:
-
-```bash
-sudo nano /etc/nginx/sites-available/scim.yourdomain.com
-```
-
-Replace the `location /` block with:
-
-```nginx
-location / {
-    proxy_set_header        Host $host;
-    proxy_set_header        X-Real-IP $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header        X-Forwarded-Proto $scheme;
-    proxy_pass              http://localhost:8082; # Port from .env file
-}
-```
-
-Test and restart NGINX:
+### d. Test and restart NGINX:
 
 ```bash
 sudo nginx -t
