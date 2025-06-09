@@ -356,14 +356,10 @@ Fill in the SCIM connection form with the following details:
 -   **SCIM connector base URL**: `https://scim.yourdomain.com/scim/v2`
     *(This is the `SCIM_BRIDGE_EXTERNAL_URL` from your .env file, with `/scim/v2` appended).*
 
--   **Unique identifier field for users**: `userName`
-
--   **Authentication Mode**: Select `HTTP Header`.
-
 -   **Authorization**: Provide a valid Bearer Token.
-    *This is a JWT from your Keycloak instance that Okta will use to authenticate to the Janus bridge. For production, it is highly recommended to create a separate, dedicated service account client in Keycloak just for Okta. You can then use the Client ID and Secret of that client to obtain a long-lived access token.*
+    *This is the static-token from `application.yml`*
 
-After saving, click **Test Connector Configuration** to ensure Okta can communicate with the Janus bridge.
+After saving, click **Test Connector Configuration** to ensure Okta can communicate with the Axiom bridge.
 
 #### Provisioning Settings
 
@@ -371,19 +367,18 @@ Once the connection is established, navigate to the **Provisioning** tab for the
 
 Enable the following options:
 
--   ✅ **Create Users**
--   ✅ **Update User Attributes**
--   ✅ **Deactivate Users**
+-   **Create Users**
+-   **Update User Attributes**
+-   **Deactivate Users**
 
 **IMPORTANT**: Do **not** enable the password synchronization option:
 
 -   ❌ **Sync Password**
-    *(This implementation focuses on user and group provisioning. Password management should remain delegated to Keycloak or your primary IdP).*
 
 #### Final Steps
 
-1.  **Configure Attribute Mappings**: Ensure the attributes in Okta (like `firstName`, `lastName`, `email`) are correctly mapped to the SCIM attributes in the Profile Editor.
-2.  **Assign Users/Groups**: In the **Assignments** tab, assign users or groups to the application. Once assigned, Okta will automatically start provisioning them to your Keycloak instance through the Janus bridge.
+1.  **Assign Users/Groups**: In the **Assignments** tab, assign users or groups to the application. Once assigned, Okta will automatically start provisioning them to your Keycloak instance through the Axiom bridge.
+2. Verify the users and groups in keycloak
 
 ---
 
