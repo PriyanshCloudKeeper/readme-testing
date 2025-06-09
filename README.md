@@ -283,7 +283,7 @@ Go to the **Credentials** tab.
 
 - You will see a **Client secret**.
 - This secret must match the `KEYCLOAK_ADMIN_CLIENT_SECRET` in your `.env` file.
-- If it doesn’t, regenerate it and update your `.env` file.
+- If it doesn’t, copy it and update your `.env` file.
 - Then restart the SCIM bridge container:
 
 ```bash
