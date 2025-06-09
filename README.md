@@ -110,7 +110,7 @@ SCIM_BRIDGE_EXTERNAL_URL=https://scim.yourdomain.com
 
 We will create NGINX server blocks to route traffic to our Docker containers and use Certbot to secure them with free, trusted SSL certificates from Let's Encrypt.
 
--   Create NGINX Configuration Files
+### a. Create NGINX Configuration Files
 
     Create a configuration file for Keycloak:
     ```bash
