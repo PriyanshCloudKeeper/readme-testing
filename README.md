@@ -146,3 +146,185 @@ We will create NGINX server blocks to route traffic to our Docker containers and
         }
     }
     ```
+
+### b. Enable the Sites
+
+Enable the NGINX site configurations and restart NGINX:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/keycloak.yourdomain.com /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/scim.yourdomain.com /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+---
+
+### c. Obtain SSL Certificates
+
+Use **Certbot** to obtain SSL certificates and automatically configure HTTPS:
+
+```bash
+sudo certbot --nginx -d keycloak.yourdomain.com -d scim.yourdomain.com
+```
+
+- Follow the prompts.
+- Choose the option to redirect HTTP to HTTPS.
+- Certbot will automatically modify the NGINX configuration to enable SSL.
+
+---
+
+### d. Update NGINX to Proxy to Docker Containers
+
+Now modify the NGINX configurations to proxy incoming HTTPS traffic to the corresponding internal services.
+
+#### Update the Keycloak NGINX Configuration
+
+Edit the file:
+
+```bash
+sudo nano /etc/nginx/sites-available/keycloak.yourdomain.com
+```
+
+Locate the `server { listen 443 ssl; ... }` block and replace the `location /` block with:
+
+```nginx
+location / {
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    proxy_pass              http://localhost:8081; # Port from .env file
+}
+```
+
+#### Update the SCIM Bridge NGINX Configuration
+
+Edit the file:
+
+```bash
+sudo nano /etc/nginx/sites-available/scim.yourdomain.com
+```
+
+Replace the `location /` block with:
+
+```nginx
+location / {
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    proxy_pass              http://localhost:8082; # Port from .env file
+}
+```
+
+Test and restart NGINX:
+
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+---
+
+### 4. Build and Run the Application Stack
+
+Now that the environment is configured, you can start the services using Docker Compose.
+
+```bash
+# In the root of the project directory
+docker compose up --build -d
+```
+
+This command will:
+
+- Build the scim-bridge Docker image from the source code.
+- Pull the keycloak and mariadb images.
+- Start all three containers in detached mode (`-d`).
+
+Check the logs to ensure everything started correctly:
+
+```bash
+docker compose logs -f
+# Press Ctrl+C to exit logs
+```
+
+---
+
+### 5. Configure Keycloak
+
+After the containers are running, you need to create a client in Keycloak for the Janus bridge to use.
+
+1. Navigate to your Keycloak instance: `https://keycloak.yourdomain.com`.
+2. Log in with the admin credentials you set in the `.env` file.
+3. Go to **Clients** in the **master** realm (or your target realm).
+4. Click **Create client**.
+5. Set the **Client ID** to match `KEYCLOAK_ADMIN_CLIENT_ID` from your `.env` file (e.g., `scim-bridge-client`).
+6. Click **Next**.
+7. Ensure **Client authentication** is **On** and select **Service accounts roles**.
+8. Click **Save**.
+
+A new set of tabs will appear. Go to the **Service account roles** tab.
+
+- Click **Assign role**.
+- Filter for **realm-management** and assign the following roles:
+  - `manage-groups`
+  - `manage-users`
+  - `query-groups`
+  - `query-users`
+  - `view-users`
+
+Go to the **Credentials** tab.
+
+- You will see a **Client secret**.
+- This secret must match the `KEYCLOAK_ADMIN_CLIENT_SECRET` in your `.env` file.
+- If it doesn’t, regenerate it and update your `.env` file.
+- Then restart the SCIM bridge container:
+
+```bash
+docker compose restart scim-bridge
+```
+
+---
+
+### 🧪 Using the SCIM API
+
+Your SCIM bridge is now ready to accept requests at `https://scim.yourdomain.com`.
+
+#### Get an Access Token
+
+Use the following command to get an access token from Keycloak:
+
+```bash
+export access_token=$(curl -s -d "client_id=admin-cli" -d "username=${KEYCLOAK_ADMIN_USER}" -d "password=${KEYCLOAK_ADMIN_PASSWORD}" -d "grant_type=password" "https://keycloak.yourdomain.com/realms/master/protocol/openid-connect/token" | jq -r .access_token)
+```
+
+#### Make API Calls
+
+**Get all users:**
+
+```bash
+curl -X GET "https://scim.yourdomain.com/scim/v2/Users" \
+-H "Authorization: Bearer $access_token"
+```
+
+**Create a new user:**
+
+```bash
+curl -X POST "https://scim.yourdomain.com/scim/v2/Users" \
+-H "Authorization: Bearer $access_token" \
+-H "Content-Type: application/scim+json" \
+-d '{
+  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:User"],
+  "userName": "newuser-from-scim",
+  "name": {
+    "givenName": "Test",
+    "familyName": "User"
+  },
+  "emails": [{
+    "value": "test.user@example.com",
+    "primary": true
+  }],
+  "active": true
+}'
+```
