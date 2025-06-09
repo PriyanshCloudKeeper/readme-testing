@@ -114,7 +114,7 @@ sudo nano /etc/nginx/sites-available/keycloak.yourdomain.com
 
 Paste this configuration (replace keycloak.yourdomain.com with your actual domain):
 
-```bash
+```nginx
 server {
     listen 80;
     server_name keycloak.yourdomain.com;
@@ -131,7 +131,7 @@ sudo nano /etc/nginx/sites-available/scim.yourdomain.com
 ```
 
 Paste this configuration (replace scim.yourdomain.com with your actual domain):
-```bash
+```nginx
 server {
     listen 80;
     server_name scim.yourdomain.com;
