@@ -338,3 +338,53 @@ curl -k -i -X POST "https://scim.yourdomain.com/scim/v2/Users" \
   "active": true
 }'
 ```
+
+---
+
+## 🔌 Integrating with Identity Providers (e.g., Okta)
+
+This bridge is built to the **SCIM 2.0** standard and has been successfully tested with **Okta** for automated user provisioning. The following steps outline how to configure Okta to provision users to your Keycloak instance via **Janus**.
+
+1.  In your Okta Admin Console, navigate to **Applications** > **Applications**.
+2.  Click **Create App Integration**.
+3.  Select **SCIM 2.0** as the sign-on method and choose **OAuth Bearer Token** for the authentication.
+4.  Proceed to the **SCIM Connection** configuration screen.
+
+#### Configuration Details
+
+Fill in the SCIM connection form with the following details:
+
+-   **SCIM connector base URL**: `https://scim.yourdomain.com/scim/v2`
+    *(This is the `SCIM_BRIDGE_EXTERNAL_URL` from your .env file, with `/scim/v2` appended).*
+
+-   **Unique identifier field for users**: `userName`
+
+-   **Authentication Mode**: Select `HTTP Header`.
+
+-   **Authorization**: Provide a valid Bearer Token.
+    *This is a JWT from your Keycloak instance that Okta will use to authenticate to the Janus bridge. For production, it is highly recommended to create a separate, dedicated service account client in Keycloak just for Okta. You can then use the Client ID and Secret of that client to obtain a long-lived access token.*
+
+After saving, click **Test Connector Configuration** to ensure Okta can communicate with the Janus bridge.
+
+#### Provisioning Settings
+
+Once the connection is established, navigate to the **Provisioning** tab for the application in Okta and click **Edit** under the **To App** settings.
+
+Enable the following options:
+
+-   ✅ **Create Users**
+-   ✅ **Update User Attributes**
+-   ✅ **Deactivate Users**
+
+**IMPORTANT**: Do **not** enable the password synchronization option:
+
+-   ❌ **Sync Password**
+    *(This implementation focuses on user and group provisioning. Password management should remain delegated to Keycloak or your primary IdP).*
+
+#### Final Steps
+
+1.  **Configure Attribute Mappings**: Ensure the attributes in Okta (like `firstName`, `lastName`, `email`) are correctly mapped to the SCIM attributes in the Profile Editor.
+2.  **Assign Users/Groups**: In the **Assignments** tab, assign users or groups to the application. Once assigned, Okta will automatically start provisioning them to your Keycloak instance through the Janus bridge.
+
+---
+
