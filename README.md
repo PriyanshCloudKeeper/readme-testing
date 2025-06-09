@@ -286,7 +286,9 @@ docker compose restart scim-bridge
 
 ### 🧪 Using the SCIM API
 
-Your SCIM bridge is now ready to accept requests at `https://scim.yourdomain.com`.To test your SCIM bridge endpoints directly, use one of the static tokens configured in src/main/resources/application.yml.
+Your SCIM bridge is now ready to accept requests at `https://scim.yourdomain.com`.
+
+To test your SCIM bridge endpoints directly, use one of the static tokens configured in src/main/resources/application.yml.
 Replace YOUR_CONFIGURED_STATIC_TOKEN with an actual token value and scim.yourdomain.com with your SCIM bridge's public domain.
 
 #### Get Service Provider Configuration:
