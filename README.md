@@ -110,40 +110,42 @@ We will create NGINX server blocks to route traffic to our Docker containers and
 
 ### a. Create NGINX Configuration Files
 
-    Create a configuration file for Keycloak:
-    ```bash
-    sudo nano /etc/nginx/sites-available/keycloak.yourdomain.com
-    ```
+Create a configuration file for Keycloak:
 
-    Paste this configuration (replace keycloak.yourdomain.com with your actual domain):
 
-    ```bash
-    server {
-        listen 80;
-        server_name keycloak.yourdomain.com;
-        root /var/www/html; # Required for Certbot webroot challenge
-        location ~ /.well-known/acme-challenge/ {
-            allow all;
-        }
+```bash
+sudo nano /etc/nginx/sites-available/keycloak.yourdomain.com
+```
+
+Paste this configuration (replace keycloak.yourdomain.com with your actual domain):
+
+```bash
+server {
+    listen 80;
+    server_name keycloak.yourdomain.com;
+    root /var/www/html; # Required for Certbot webroot challenge
+    location ~ /.well-known/acme-challenge/ {
+        allow all;
     }
-    ```  
-    
-    Create a configuration file for the SCIM bridge:
-    ```bash
-    sudo nano /etc/nginx/sites-available/scim.yourdomain.com
-    ```
+}
+```  
 
-    Paste this configuration (replace scim.yourdomain.com with your actual domain):
-    ```bash
-    server {
-        listen 80;
-        server_name scim.yourdomain.com;
-        root /var/www/html; # Required for Certbot webroot challenge
-        location ~ /.well-known/acme-challenge/ {
-            allow all;
-        }
+Create a configuration file for the SCIM bridge:
+```bash
+sudo nano /etc/nginx/sites-available/scim.yourdomain.com
+```
+
+Paste this configuration (replace scim.yourdomain.com with your actual domain):
+```bash
+server {
+    listen 80;
+    server_name scim.yourdomain.com;
+    root /var/www/html; # Required for Certbot webroot challenge
+    location ~ /.well-known/acme-challenge/ {
+        allow all;
     }
-    ```
+}
+```
 
 ### b. Enable the Sites
 
