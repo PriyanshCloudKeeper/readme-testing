@@ -279,7 +279,7 @@ A new set of tabs will appear. Go to the **Service account roles** tab.
   - `query-users`
   - `view-users`
 
-(For quick testing purpose you can give the manage-realm role)
+(For quick testing purpose, you can give the manage-realm role)
 
 Go to the **Credentials** tab.
 
