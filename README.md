@@ -345,10 +345,9 @@ curl -k -i -X POST "https://scim.yourdomain.com/scim/v2/Users" \
 
 This bridge is built to the **SCIM 2.0** standard and has been successfully tested with **Okta** for automated user provisioning. The following steps outline how to configure Okta to provision users to your Keycloak instance via **Janus**.
 
-1.  In your Okta Admin Console, navigate to **Applications** > **Applications**.
-2.  Click **Create App Integration**.
-3.  Select **SCIM 2.0** as the sign-on method and choose **OAuth Bearer Token** for the authentication.
-4.  Proceed to the **SCIM Connection** configuration screen.
+1.  In your Okta Admin Console, navigate to **Applications** > **Applications** > **Browse App Catalog**.
+2.  Search and select **SCIM 2.0 Test App (OAuth Bearer Token).
+3.  Proceed to the **SCIM Connection** configuration screen.
 
 #### Configuration Details
 
