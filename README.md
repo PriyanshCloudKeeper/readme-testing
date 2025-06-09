@@ -32,8 +32,6 @@ The application follows a classic three-tier architecture within a Dockerized en
 4.  **MariaDB**: The persistent database backend for Keycloak.
 
 
-*A high-level diagram of the deployment architecture.*
-
 ## 🚀 Getting Started
 
 These instructions will guide you through setting up the complete environment on a fresh server (e.g., an AWS EC2 instance).
