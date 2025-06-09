@@ -1,11 +1,11 @@
-# Janus: SCIM 2.0 to Keycloak Bridge
+# Axiom: SCIM 2.0 to Keycloak Bridge
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java Version](https://img.shields.io/badge/Java-17-blue.svg)](https://www.java.com)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Keycloak](https://img.shields.io/badge/Keycloak-26.1.4-blue.svg)](https://www.keycloak.org/)
 
-**Janus** is a robust, production-ready service that acts as a bridge between the **SCIM 2.0 protocol** and the **Keycloak Admin API**. It exposes a standard, compliant SCIM 2.0 interface, allowing any SCIM-compatible Identity Provider (IdP) or client to manage users and groups in a Keycloak instance seamlessly.
+**Axiom** is a robust, production-ready service that acts as a bridge between the **SCIM 2.0 protocol** and the **Keycloak Admin API**. It exposes a standard, compliant SCIM 2.0 interface, allowing any SCIM-compatible Identity Provider (IdP) or client to manage users and groups in a Keycloak instance seamlessly.
 
 ---
 
@@ -24,8 +24,8 @@
 
 The application follows a classic three-tier architecture within a Dockerized environment, orchestrated by Docker Compose and fronted by an NGINX reverse proxy.
 
-1.  **NGINX Reverse Proxy**: Handles incoming traffic, terminates SSL/TLS, and routes requests to the appropriate service based on the domain name. It ensures both Keycloak and the Janus bridge are accessible via standard HTTPS.
-2.  **Janus (SCIM Bridge)**: The core Spring Boot application that translates SCIM requests to Keycloak API calls.
+1.  **NGINX Reverse Proxy**: Handles incoming traffic, terminates SSL/TLS, and routes requests to the appropriate service based on the domain name. It ensures both Keycloak and the Axiom bridge are accessible via standard HTTPS.
+2.  **Axiom (SCIM Bridge)**: The core Spring Boot application that translates SCIM requests to Keycloak API calls.
 3.  **Keycloak**: The Identity and Access Management system, responsible for authentication and storing user/group data.
 4.  **MariaDB**: The persistent database backend for Keycloak.
 
@@ -59,7 +59,7 @@ These instructions will guide you through setting up the complete environment on
 
 ### 1. Clone the Repository
 
-Clone the project to your server. The project includes the Janus source code and the `docker-compose.yml` file.
+Clone the project to your server. The project includes the Axiom source code and the `docker-compose.yml` file.
 
 
 ### 2. Configure Environment Variables
@@ -85,17 +85,17 @@ KEYCLOAK_ADMIN_PASSWORD=your_strong_keycloak_admin_password
 KC_HOSTNAME_URL=https://keycloak.yourdomain.com # Public URL for Keycloak
 KEYCLOAK_HOST_HTTP_PORT=8081 # Host port Keycloak's HTTP will be mapped to
 
-# Janus (SCIM Bridge) Host
-SCIM_BRIDGE_HOST_PORT=8082 # Host port Janus's HTTP will be mapped to
+# Axiom (SCIM Bridge) Host
+SCIM_BRIDGE_HOST_PORT=8082 # Host port Axiom's HTTP will be mapped to
 
-# Janus Configuration (Keycloak Admin Client & Security)
+# Axiom Configuration (Keycloak Admin Client & Security)
 KEYCLOAK_BRIDGE_SECURED_BY_REALM=master # Realm used by Keycloak to issue tokens to its own clients (not used for SCIM auth in current setup)
 KEYCLOAK_ADMIN_CLIENT_REALM=master # Realm where scim-bridge-client authenticates for admin operations
-KEYCLOAK_PROVISIONING_TARGET_REALM=master # Realm where users/groups will be provisioned by Janus
-KEYCLOAK_ADMIN_CLIENT_ID=scim-bridge-client # Client ID for Janus to talk to Keycloak Admin API
+KEYCLOAK_PROVISIONING_TARGET_REALM=master # Realm where users/groups will be provisioned by Axiom
+KEYCLOAK_ADMIN_CLIENT_ID=scim-bridge-client # Client ID for Axiom to talk to Keycloak Admin API
 KEYCLOAK_ADMIN_CLIENT_SECRET=REPLACE_WITH_A_VERY_STRONG_SECRET # Secret for scim-bridge-client (Keycloak Admin API)
 
-# Public-facing base URL of the SCIM bridge (used by Janus to construct self-referential links)
+# Public-facing base URL of the SCIM bridge (used by Axiom to construct self-referential links)
 SCIM_BRIDGE_EXTERNAL_URL=https://scim.yourdomain.com
 ```
 
@@ -248,7 +248,7 @@ docker compose logs -f
 
 ### 5. Configure Keycloak
 
-After the containers are running, you need to create a client in Keycloak for the Janus bridge to use.
+After the containers are running, you need to create a client in Keycloak for the Axiom bridge to use.
 
 1. Navigate to your Keycloak instance: `https://keycloak.yourdomain.com`.
 2. Log in with the admin credentials you set in the `.env` file.
