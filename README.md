@@ -100,15 +100,13 @@ KEYCLOAK_HOST_HTTP_PORT=8081 # Host port Keycloak's HTTP will be mapped to
 SCIM_BRIDGE_HOST_PORT=8082 # Host port Axiom's HTTP will be mapped to
 
 # Axiom Configuration (Keycloak Admin Client & Security)
-KEYCLOAK_BRIDGE_SECURED_BY_REALM=master # Realm used by Keycloak to issue tokens to its own clients (not used for SCIM auth in current setup)
-KEYCLOAK_ADMIN_CLIENT_REALM=master # Realm where scim-bridge-client authenticates for admin operations
+KEYCLOAK_BRIDGE_SECURED_BY_REALM=master
+KEYCLOAK_ADMIN_CLIENT_REALM=master
 KEYCLOAK_PROVISIONING_TARGET_REALM=master # Realm where users/groups will be provisioned by Axiom
 KEYCLOAK_ADMIN_CLIENT_ID=scim-bridge-client # Client ID for Axiom to talk to Keycloak Admin API
-KEYCLOAK_ADMIN_CLIENT_SECRET=REPLACE_WITH_A_VERY_STRONG_SECRET # Secret for scim-bridge-client (Keycloak Admin API)
-
-# Public-facing base URL of the SCIM bridge (used by Axiom to construct self-referential links)
-SCIM_BRIDGE_EXTERNAL_URL=https://scim.yourdomain.com
+KEYCLOAK_ADMIN_CLIENT_SECRET=REPLACE_WITH_A_VERY_STRONG_SECRET # Client Secret for scim-bridge-client (Keycloak Admin API)
 ```
+
 
 ### 3. Set Up NGINX Reverse Proxy & SSL
 
