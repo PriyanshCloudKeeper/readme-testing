@@ -17,7 +17,7 @@ The name **Janus** is inspired by the Roman god of gates, transitions, and doorw
     -   **Users**: Create, Read (Get), Update (PUT/PATCH), and Delete.
     -   **Groups**: Create, Read, Update (PUT/PATCH), and Delete, including member management.
     -   **Discovery**: `ServiceProviderConfig`, `ResourceTypes`, and `Schemas` endpoints are fully implemented.
--   **Secure by Design**: Endpoints are secured with OAuth 2.0 JWT Bearer Tokens, validated against a Keycloak realm.
+-   **Secure by Design**: Endpoints are secured and support authentication via pre-configured static Bearer Tokens (ideal for IdPs with limited OAuth2 client capabilities). The internal Keycloak Admin Client communication remains secured by standard OAuth 2.0 JWTs
 -   **Robust & Scalable**: Built with Spring Boot for high performance and easy containerization.
 -   **Enterprise-Ready**: Maps standard SCIM attributes and the Enterprise User extension to Keycloak user attributes.
 -   **Extensible**: Cleanly structured with mappers and services, making it easy to add custom attribute mappings.
