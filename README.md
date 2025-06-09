@@ -121,7 +121,7 @@ Create a configuration file for Keycloak:
 sudo nano /etc/nginx/sites-available/keycloak.yourdomain.com
 ```
 
-Paste this configuration (replace keycloak.yourdomain.com with your actual domain):
+Paste this configuration (replace keycloak.yourdomain.com with your actual domain, and replace yourip with your actual instance ip):
 
 ```nginx
 server {
