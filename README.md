@@ -286,14 +286,15 @@ docker compose restart scim-bridge
 
 ### 🧪 Using the SCIM API
 
-Your SCIM bridge is now ready to accept requests at `https://scim.yourdomain.com`.
+Your SCIM bridge is now ready to accept requests at `https://scim.yourdomain.com`.To test your SCIM bridge endpoints directly, use one of the static tokens configured in src/main/resources/application.yml.
+Replace YOUR_CONFIGURED_STATIC_TOKEN with an actual token value and scim.yourdomain.com with your SCIM bridge's public domain.
 
-#### Get an Access Token
-
-Use the following command to get an access token from Keycloak:
+#### Get Service Provider Configuration:
 
 ```bash
-export access_token=$(curl -s -d "client_id=admin-cli" -d "username=${KEYCLOAK_ADMIN_USER}" -d "password=${KEYCLOAK_ADMIN_PASSWORD}" -d "grant_type=password" "https://keycloak.yourdomain.com/realms/master/protocol/openid-connect/token" | jq -r .access_token)
+STATIC_TOKEN="YOUR_CONFIGURED_STATIC_TOKEN"
+curl -k -i "https://scim.yourdomain.com/scim/v2/ServiceProviderConfig" \
+-H "Authorization: Bearer $STATIC_TOKEN"
 ```
 
 #### Make API Calls
@@ -301,27 +302,27 @@ export access_token=$(curl -s -d "client_id=admin-cli" -d "username=${KEYCLOAK_A
 **Get all users:**
 
 ```bash
-curl -X GET "https://scim.yourdomain.com/scim/v2/Users" \
--H "Authorization: Bearer $access_token"
+STATIC_TOKEN="YOUR_CONFIGURED_STATIC_TOKEN"
+curl -k -i "https://scim.yourdomain.com/scim/v2/Users" \
+-H "Authorization: Bearer $STATIC_TOKEN"
 ```
 
 **Create a new user:**
 
 ```bash
-curl -X POST "https://scim.yourdomain.com/scim/v2/Users" \
--H "Authorization: Bearer $access_token" \
+STATIC_TOKEN="YOUR_CONFIGURED_STATIC_TOKEN"
+NEW_SCIM_USER="curl-user-$(date +%s)"
+curl -k -i -X POST "https://scim.yourdomain.com/scim/v2/Users" \
+-H "Authorization: Bearer $STATIC_TOKEN" \
 -H "Content-Type: application/scim+json" \
 -d '{
   "schemas": ["urn:ietf:params:scim:schemas:core:2.0:User"],
-  "userName": "newuser-from-scim",
+  "userName": "'"$NEW_SCIM_USER"'",
   "name": {
-    "givenName": "Test",
+    "givenName": "CurlTest",
     "familyName": "User"
   },
-  "emails": [{
-    "value": "test.user@example.com",
-    "primary": true
-  }],
+  "emails": [{"value": "'"$NEW_SCIM_USER"'@example.com", "primary": true}],
   "active": true
 }'
 ```
