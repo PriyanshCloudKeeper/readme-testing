@@ -64,6 +64,17 @@ Clone the project to your server. The project includes the Axiom source code and
 
 ### 2. Configure Environment Variables
 
+Update the `application.yml` file.
+
+```bash
+  security:
+    static-tokens:
+      # Add one or more secret, long, and random tokens here
+      - "REPLACE-WITH-YOUR-FIRST-SUPER-SECRET-STATIC-TOKEN"
+      - "REPLACE-WITH-ANOTHER-OPTIONAL-STATIC-TOKEN"
+```
+
+
 Create a .env file in the root directory of the cloned project. This file will store all your sensitive and environment-specific configurations.
 
 ```bash
