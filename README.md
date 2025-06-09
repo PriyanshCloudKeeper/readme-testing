@@ -223,30 +223,6 @@ sudo certbot --nginx -d keycloak.yourdomain.com -d scim.yourdomain.com
 
 ---
 
-### d. Update NGINX to Proxy to Docker Containers
-
-Now modify the NGINX configurations to proxy incoming HTTPS traffic to the corresponding internal services.
-
-#### Update the Keycloak NGINX Configuration
-
-Edit the file:
-
-```bash
-sudo nano /etc/nginx/sites-available/keycloak.yourdomain.com
-```
-
-Locate the `server { listen 443 ssl; ... }` block and replace the `location /` block with:
-
-```nginx
-location / {
-    proxy_set_header        Host $host;
-    proxy_set_header        X-Real-IP $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header        X-Forwarded-Proto $scheme;
-    proxy_pass              http://localhost:8081; # Port from .env file
-}
-```
-
 #### Update the SCIM Bridge NGINX Configuration
 
 Edit the file:
