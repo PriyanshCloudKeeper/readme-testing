@@ -65,6 +65,44 @@ These instructions will guide you through setting up the complete environment on
 
 Clone the project to your server. The project includes the Janus source code and the `docker-compose.yml` file.
 
+
+### 2. Configure Environment Variables
+
+Create a .env file in the root directory of the cloned project. This file will store all your sensitive and environment-specific configurations.
+
 ```bash
-git clone https://github.com/your-username/janus-scim-keycloak-bridge.git # Replace with your repo URL
-cd janus-scim-keycloak-bridge
+nano .env
+```
+
+Paste the following content into the file, adjusting the values to match your setup.
+
+```bash
+# Database Credentials
+MARIADB_ROOT_PASSWORD=your_strong_mariadb_root_password
+MARIADB_DATABASE=keycloak
+MARIADB_USER=keycloak
+MARIADB_PASSWORD=your_strong_keycloak_db_password
+
+# Keycloak Admin Credentials & Host
+KEYCLOAK_ADMIN_USER=admin
+KEYCLOAK_ADMIN_PASSWORD=your_strong_keycloak_admin_password
+KC_HOSTNAME_URL=https://keycloak.yourdomain.com
+KEYCLOAK_HOST_HTTP_PORT=8081
+
+# Janus (SCIM Bridge) Host
+SCIM_BRIDGE_HOST_PORT=8082
+
+# Janus Configuration (Keycloak Admin Client & Security)
+# The realm that issues tokens to secure the bridge itself
+KEYCLOAK_BRIDGE_SECURED_BY_REALM=master
+# The realm the admin client will connect to (often the same as above)
+KEYCLOAK_ADMIN_CLIENT_REALM=master
+# The realm where users/groups will be provisioned
+KEYCLOAK_PROVISIONING_TARGET_REALM=master
+# Client ID and secret for the bridge (created in Keycloak in a later step)
+KEYCLOAK_ADMIN_CLIENT_ID=scim-bridge-client
+KEYCLOAK_ADMIN_CLIENT_SECRET=generate_a_strong_secret_here
+# The public-facing URL of the SCIM bridge
+SCIM_BRIDGE_EXTERNAL_URL=https://scim.yourdomain.com
+```
+
