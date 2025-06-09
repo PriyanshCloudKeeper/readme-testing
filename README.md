@@ -7,8 +7,6 @@
 
 **Janus** is a robust, production-ready service that acts as a bridge between the **SCIM 2.0 protocol** and the **Keycloak Admin API**. It exposes a standard, compliant SCIM 2.0 interface, allowing any SCIM-compatible Identity Provider (IdP) or client to manage users and groups in a Keycloak instance seamlessly.
 
-The name **Janus** is inspired by the Roman god of gates, transitions, and doorways, perfectly symbolizing this application's role as a gateway between two distinct systems.
-
 ---
 
 ## 🌟 Features
